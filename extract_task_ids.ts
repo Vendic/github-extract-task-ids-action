@@ -3,6 +3,7 @@ import * as github from '@actions/github'
 
 const run = async (): Promise<void> => {
     try {
+        core.debug('Starting task id extraction.')
         const token = core.getInput('token')
         const task_id_pattern : RegExp = new RegExp(core.getInput('task_id_pattern'))
         const octokit = github.getOctokit(token)
@@ -17,6 +18,7 @@ const run = async (): Promise<void> => {
             repo: repo,
             pull_number: pull_number
         })
+        core.debug(`Got ${result.data.length} commits from Github.`)
 
         // Get all of the commit messages and the branch names in one list.
         let pile_of_possible_task_ids : string[] = []
