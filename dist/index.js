@@ -6243,11 +6243,7 @@ const run = async () => {
                 task_ids.push(task_id);
             }
         }
-        const unique_task_ids = [...new Set(task_ids)];
-        for (const unique_task_id of unique_task_ids) {
-            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Found task id ${unique_task_id}`);
-        }
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('task_ids', JSON.stringify(unique_task_ids));
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('task_ids', JSON.stringify(task_ids));
     }
     catch (error) {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(`Action failed: ${error}`);

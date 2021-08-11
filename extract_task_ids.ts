@@ -41,12 +41,7 @@ const run = async (): Promise<void> => {
             }
         }
 
-        const unique_task_ids : string[] = [ ... new Set(task_ids) ]
-        for (const unique_task_id of unique_task_ids) {
-            core.info(`Found task id ${unique_task_id}`)
-        }
-
-        core.setOutput('task_ids', JSON.stringify(unique_task_ids))
+        core.setOutput('task_ids', JSON.stringify(task_ids))
     } catch (error) {
         core.setFailed(`Action failed: ${error}`)
     }
