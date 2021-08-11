@@ -9,7 +9,7 @@ inputs:
         description: Your Github token
         required: true
     task_id_patteren:
-        description: A regex that allows you to
+        description: The regex patteren of your task id
         required: true
-        default: '[A-Z]{2,5}-\\d{1,4}'
+        default: '[A-Z]{2,5}-[0-9]{1,4}'
 

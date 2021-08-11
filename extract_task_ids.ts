@@ -28,6 +28,7 @@ const run = async (): Promise<void> => {
         // Extract the task ids using the input pattern
         let task_ids : string[] = []
         for (const possible_task_id of pile_of_possible_task_ids) {
+            core.debug(`Testing ${possible_task_id}`)
             if (task_id_pattern.test(possible_task_id)) {
                 let matches = possible_task_id.match(task_id_pattern)
                 // @ts-ignore

@@ -33,7 +33,7 @@ beforeEach(() => {
     jest.resetModules()
     process.env['INPUT_TOKEN'] = 'xyz'
     process.env['GITHUB_REPOSITORY'] = 'foo/bar';
-    process.env['INPUT_TASK_ID_PATTERN'] = '[A-Z]{2,5}-\\d{1,4}'
+    process.env['INPUT_TASK_ID_PATTERN'] = '[A-Z]{2,5}-[0-9]{1,4}'
     const payloadPath = path.join(__dirname, 'payload.json');
     const payload = JSON.parse(fs.readFileSync(payloadPath, 'utf8'))
     github.context.payload = payload as WebhookPayload
