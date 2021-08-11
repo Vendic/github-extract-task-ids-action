@@ -5,7 +5,8 @@ const run = async (): Promise<void> => {
     try {
         core.debug('Starting task id extraction.')
         const token = core.getInput('token')
-        const task_id_pattern : RegExp = new RegExp(core.getInput('task_id_pattern'))
+        const input_pattern = core.getInput('task_id_pattern');
+        const task_id_pattern : RegExp = new RegExp(input_pattern)
         const octokit = github.getOctokit(token)
         // @ts-ignore
         const branch = github.context.payload.pull_request.head.ref
@@ -19,7 +20,7 @@ const run = async (): Promise<void> => {
             pull_number: pull_number
         })
         core.debug(`Got ${result.data.length} commits from Github.`)
-        core.debug(`Testing with regex "${task_id_pattern}"`)
+        core.debug(`Testing with regex "${input_pattern}"`)
 
         // Get all of the commit messages and the branch names in one list.
         let pile_of_possible_task_ids : string[] = []
@@ -36,7 +37,7 @@ const run = async (): Promise<void> => {
                 let matches = possible_task_id.match(task_id_pattern)
                 // @ts-ignore
                 let task_id = matches[0]
-                core.debug(`Pushing ${task_id} to the list`)
+                core.info(`Found task id ${task_id}`)
                 task_ids.push(task_id)
             }
         }

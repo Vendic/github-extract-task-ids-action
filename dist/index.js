@@ -6211,7 +6211,8 @@ const run = async () => {
     try {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug('Starting task id extraction.');
         const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('token');
-        const task_id_pattern = new RegExp(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('task_id_pattern'));
+        const input_pattern = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('task_id_pattern');
+        const task_id_pattern = new RegExp(input_pattern);
         const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(token);
         // @ts-ignore
         const branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.head.ref;
@@ -6224,7 +6225,7 @@ const run = async () => {
             pull_number: pull_number
         });
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Got ${result.data.length} commits from Github.`);
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Testing with regex "${task_id_pattern}"`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Testing with regex "${input_pattern}"`);
         // Get all of the commit messages and the branch names in one list.
         let pile_of_possible_task_ids = [];
         for (const commit of result.data) {
@@ -6239,7 +6240,7 @@ const run = async () => {
                 let matches = possible_task_id.match(task_id_pattern);
                 // @ts-ignore
                 let task_id = matches[0];
-                _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Pushing ${task_id} to the list`);
+                _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Found task id ${task_id}`);
                 task_ids.push(task_id);
             }
         }
