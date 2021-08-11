@@ -3,7 +3,7 @@
     "number": 2,
     "pull_request": {
         "body": "Hello world",
-        "title": "ABC-123 Your pull request (automerge)",
+        "title": "ABC-999 Your pull request (automerge)",
         "head": {
             "ref": "feature/ABC-123-hello-world"
         }

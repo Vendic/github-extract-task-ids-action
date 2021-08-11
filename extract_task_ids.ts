@@ -10,6 +10,8 @@ const run = async (): Promise<void> => {
         const octokit = github.getOctokit(token)
         // @ts-ignore
         const branch = github.context.payload.pull_request.head.ref
+        // @ts-ignore
+        const pr_title = github.context.payload.pull_request.title
         const pull_number = github.context.payload.number
         const owner = github.context.repo.owner
         const repo = github.context.repo.repo
@@ -28,6 +30,7 @@ const run = async (): Promise<void> => {
             pile_of_possible_task_ids.push(commit.commit.message)
         }
         pile_of_possible_task_ids.push(branch)
+        pile_of_possible_task_ids.push(pr_title)
 
         // Extract the task ids using the input pattern
         let task_ids : string[] = []
@@ -42,7 +45,7 @@ const run = async (): Promise<void> => {
             }
         }
 
-        core.setOutput('task_ids', JSON.stringify(task_ids))
+        core.setOutput('task_ids', task_ids.join('\n'))
     } catch (error) {
         core.setFailed(`Action failed: ${error}`)
     }

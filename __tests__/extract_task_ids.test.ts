@@ -24,7 +24,8 @@ describe('Test happy path', () => {
         expect(infoMock).toHaveBeenCalledWith('Found task id ABC-100')
         expect(infoMock).toHaveBeenCalledWith('Found task id DEV-1234')
         expect(infoMock).toHaveBeenCalledWith('Found task id ABC-123')
-        expect(setOutputMock).toHaveBeenCalledWith('task_ids', '["ABC-100","DEV-1234","ABC-123"]')
+        expect(infoMock).toHaveBeenCalledWith('Found task id ABC-999')
+        expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'ABC-100\nDEV-1234\nABC-123\nABC-999')
     })
 })
 

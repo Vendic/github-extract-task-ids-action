@@ -6216,6 +6216,8 @@ const run = async () => {
         const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(token);
         // @ts-ignore
         const branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.head.ref;
+        // @ts-ignore
+        const pr_title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title;
         const pull_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.number;
         const owner = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner;
         const repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo;
@@ -6232,6 +6234,7 @@ const run = async () => {
             pile_of_possible_task_ids.push(commit.commit.message);
         }
         pile_of_possible_task_ids.push(branch);
+        pile_of_possible_task_ids.push(pr_title);
         // Extract the task ids using the input pattern
         let task_ids = [];
         for (const possible_task_id of pile_of_possible_task_ids) {
@@ -6244,7 +6247,7 @@ const run = async () => {
                 task_ids.push(task_id);
             }
         }
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('task_ids', JSON.stringify(task_ids));
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('task_ids', task_ids.join('\n'));
     }
     catch (error) {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(`Action failed: ${error}`);
