@@ -19,6 +19,7 @@ const run = async (): Promise<void> => {
             pull_number: pull_number
         })
         core.debug(`Got ${result.data.length} commits from Github.`)
+        core.debug(`Testing with regex "${task_id_pattern}"`)
 
         // Get all of the commit messages and the branch names in one list.
         let pile_of_possible_task_ids : string[] = []
@@ -30,11 +31,12 @@ const run = async (): Promise<void> => {
         // Extract the task ids using the input pattern
         let task_ids : string[] = []
         for (const possible_task_id of pile_of_possible_task_ids) {
-            core.debug(`Testing ${possible_task_id}`)
+            core.debug(`Testing:  ${possible_task_id}`)
             if (task_id_pattern.test(possible_task_id)) {
                 let matches = possible_task_id.match(task_id_pattern)
                 // @ts-ignore
                 let task_id = matches[0]
+                core.debug(`Pushing ${task_id} to the list`)
                 task_ids.push(task_id)
             }
         }

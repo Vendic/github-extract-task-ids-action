@@ -6224,6 +6224,7 @@ const run = async () => {
             pull_number: pull_number
         });
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Got ${result.data.length} commits from Github.`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Testing with regex "${task_id_pattern}"`);
         // Get all of the commit messages and the branch names in one list.
         let pile_of_possible_task_ids = [];
         for (const commit of result.data) {
@@ -6233,11 +6234,12 @@ const run = async () => {
         // Extract the task ids using the input pattern
         let task_ids = [];
         for (const possible_task_id of pile_of_possible_task_ids) {
-            _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Testing ${possible_task_id}`);
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Testing:  ${possible_task_id}`);
             if (task_id_pattern.test(possible_task_id)) {
                 let matches = possible_task_id.match(task_id_pattern);
                 // @ts-ignore
                 let task_id = matches[0];
+                _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Pushing ${task_id} to the list`);
                 task_ids.push(task_id);
             }
         }
