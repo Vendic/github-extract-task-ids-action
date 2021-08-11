@@ -1,0 +1,15 @@
+name: 'github-extract-task-ids-action'
+description: 'Extract task ids from commit messages, branch and pull request title'
+author: 'Tjitse-E'
+runs:
+    using: 'node12'
+    main: 'dist/index.js'
+inputs:
+    token:
+        description: Your Github token
+        required: true
+    task_id_patteren:
+        description: A regex that allows you to
+        required: true
+        default: '[A-Z]{2,5}-\\d{1,4}'
+

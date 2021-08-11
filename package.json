@@ -1,0 +1,29 @@
+{
+    "name": "clickup-change-status",
+    "version": "1.0.0",
+    "description": "Change your task status in Clickup",
+    "main": "change_status.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "tsc --noEmit && jest"
+    },
+    "license": "MIT",
+    "keywords": [
+        "github",
+        "actions",
+        "clickup"
+    ],
+    "author": "Tjitse-E",
+    "devDependencies": {
+        "@actions/core": "^1.4.0",
+        "@actions/github": "^5.0.0",
+        "@octokit/types": "^6.25.0",
+        "@types/jest": "^26.0.24",
+        "@types/node": "^15.14.7",
+        "jest": "^27.0.6",
+        "js-yaml": "^4.1.0",
+        "nock": "^13.1.1",
+        "ts-jest": "^27.0.4",
+        "typescript": "^4.3.5"
+    }
+}
