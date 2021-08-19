@@ -6214,11 +6214,12 @@ const run = async () => {
         const input_pattern = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('task_id_pattern');
         const task_id_pattern = new RegExp(input_pattern);
         const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(token);
+        const pull_request = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request ?? _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.event.pull_request;
         // @ts-ignore
-        const branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.head.ref;
+        const branch = pull_request.head.ref;
         // @ts-ignore
-        const pr_title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title;
-        const pull_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.number;
+        const pr_title = pull_request.title;
+        const pull_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.number ?? pull_request.number;
         const owner = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner;
         const repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo;
         let result = await octokit.rest.pulls.listCommits({

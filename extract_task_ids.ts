@@ -8,11 +8,13 @@ const run = async (): Promise<void> => {
         const input_pattern = core.getInput('task_id_pattern');
         const task_id_pattern : RegExp = new RegExp(input_pattern)
         const octokit = github.getOctokit(token)
+        const pull_request = github.context.payload.pull_request ?? github.context.payload.event.pull_request
+
         // @ts-ignore
-        const branch = github.context.payload.pull_request.head.ref
+        const branch = pull_request.head.ref
         // @ts-ignore
-        const pr_title = github.context.payload.pull_request.title
-        const pull_number = github.context.payload.number
+        const pr_title = pull_request.title
+        const pull_number = github.context.payload.number ?? pull_request.number
         const owner = github.context.repo.owner
         const repo = github.context.repo.repo
 
