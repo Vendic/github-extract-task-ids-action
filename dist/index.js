@@ -6208,17 +6208,19 @@ __nccwpck_require__.r(__webpack_exports__);
 
 
 const run = async () => {
+    var _a, _b;
     try {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug('Starting task id extraction.');
         const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('token');
         const input_pattern = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('task_id_pattern');
         const task_id_pattern = new RegExp(input_pattern);
         const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(token);
+        const pull_request = (_a = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request) !== null && _a !== void 0 ? _a : _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.event.pull_request;
         // @ts-ignore
-        const branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.head.ref;
+        const branch = pull_request.head.ref;
         // @ts-ignore
-        const pr_title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request.title;
-        const pull_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.number;
+        const pr_title = pull_request.title;
+        const pull_number = (_b = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.number) !== null && _b !== void 0 ? _b : pull_request.number;
         const owner = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner;
         const repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo;
         let result = await octokit.rest.pulls.listCommits({
