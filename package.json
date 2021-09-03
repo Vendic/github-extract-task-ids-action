@@ -1,8 +1,8 @@
 {
-    "name": "clickup-change-status",
+    "name": "github-extract-task-ids-action",
     "version": "1.0.0",
-    "description": "Change your task status in Clickup",
-    "main": "extract_task_ids.ts",
+    "description": "Extract task ID's from a Github PR using regular expressions",
+    "main": "src/main.ts",
     "scripts": {
         "build": "tsc",
         "test": "tsc --noEmit && jest"

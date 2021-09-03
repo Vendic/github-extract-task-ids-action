@@ -1,6 +1,6 @@
 import * as github from '@actions/github'
 import * as core from '@actions/core'
-import run from '../extract_task_ids'
+import run from '../src/run'
 import path from "path";
 import * as fs from "fs";
 import {WebhookPayload} from "@actions/github/lib/interfaces";
@@ -57,9 +57,6 @@ describe('Test pull request review submitted', () => {
         expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'ABC-100\nDEV-1234\nABC-123\nABC-999')
     })
 })
-
-
-
 
 beforeEach(() => {
     jest.resetModules()

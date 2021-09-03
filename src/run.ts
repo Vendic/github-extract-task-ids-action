@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 
-const run = async (): Promise<void> => {
+export default async function run(): Promise<void> {
     try {
         core.debug('Starting task id extraction.')
         const token = core.getInput('token')
@@ -52,7 +52,3 @@ const run = async (): Promise<void> => {
         core.setFailed(`Action failed: ${error}`)
     }
 }
-
-run()
-
-export default run
