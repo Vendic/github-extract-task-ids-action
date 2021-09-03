@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 
-const run = async (): Promise<void> => {
+export default async function run(): Promise<void> {
     try {
         core.debug('Starting task id extraction.')
         const token = core.getInput('token')
@@ -47,12 +47,10 @@ const run = async (): Promise<void> => {
             }
         }
 
-        core.setOutput('task_ids', task_ids.join('\n'))
+        let uniqueTaskIds = task_ids.filter((n, i) => task_ids.indexOf(n) === i);
+
+        core.setOutput('task_ids', uniqueTaskIds.join('\n'))
     } catch (error) {
         core.setFailed(`Action failed: ${error}`)
     }
 }
-
-run()
-
-export default run

@@ -134,7 +134,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
+exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
 const command_1 = __nccwpck_require__(604);
 const file_command_1 = __nccwpck_require__(352);
 const utils_1 = __nccwpck_require__(245);
@@ -312,19 +312,30 @@ exports.debug = debug;
 /**
  * Adds an error issue
  * @param message error issue message. Errors will be converted to string via toString()
+ * @param properties optional properties to add to the annotation.
  */
-function error(message) {
-    command_1.issue('error', message instanceof Error ? message.toString() : message);
+function error(message, properties = {}) {
+    command_1.issueCommand('error', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
 }
 exports.error = error;
 /**
- * Adds an warning issue
+ * Adds a warning issue
  * @param message warning issue message. Errors will be converted to string via toString()
+ * @param properties optional properties to add to the annotation.
  */
-function warning(message) {
-    command_1.issue('warning', message instanceof Error ? message.toString() : message);
+function warning(message, properties = {}) {
+    command_1.issueCommand('warning', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
 }
 exports.warning = warning;
+/**
+ * Adds a notice issue
+ * @param message notice issue message. Errors will be converted to string via toString()
+ * @param properties optional properties to add to the annotation.
+ */
+function notice(message, properties = {}) {
+    command_1.issueCommand('notice', utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
+}
+exports.notice = notice;
 /**
  * Writes info to log with console.log.
  * @param message info message
@@ -458,7 +469,7 @@ exports.issueCommand = issueCommand;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.toCommandValue = void 0;
+exports.toCommandProperties = exports.toCommandValue = void 0;
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string
@@ -473,6 +484,25 @@ function toCommandValue(input) {
     return JSON.stringify(input);
 }
 exports.toCommandValue = toCommandValue;
+/**
+ *
+ * @param annotationProperties
+ * @returns The command properties to send with the actual annotation command
+ * See IssueCommandProperties: https://github.com/actions/runner/blob/main/src/Runner.Worker/ActionCommandManager.cs#L646
+ */
+function toCommandProperties(annotationProperties) {
+    if (!Object.keys(annotationProperties).length) {
+        return {};
+    }
+    return {
+        title: annotationProperties.title,
+        line: annotationProperties.startLine,
+        endLine: annotationProperties.endLine,
+        col: annotationProperties.startColumn,
+        endColumn: annotationProperties.endColumn
+    };
+}
+exports.toCommandProperties = toCommandProperties;
 //# sourceMappingURL=utils.js.map
 
 /***/ }),
@@ -6150,35 +6180,6 @@ module.exports = require("zlib");;
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__nccwpck_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__nccwpck_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__nccwpck_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -6197,39 +6198,39 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
+// ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(127);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(134);
-/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
+
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(127);
+// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
+var github = __nccwpck_require__(134);
+;// CONCATENATED MODULE: ./src/run.ts
 
 
-const run = async () => {
+async function run() {
     var _a, _b;
     try {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug('Starting task id extraction.');
-        const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('token');
-        const input_pattern = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('task_id_pattern');
+        core.debug('Starting task id extraction.');
+        const token = core.getInput('token');
+        const input_pattern = core.getInput('task_id_pattern');
         const task_id_pattern = new RegExp(input_pattern);
-        const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(token);
-        const pull_request = (_a = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request) !== null && _a !== void 0 ? _a : _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.event.pull_request;
+        const octokit = github.getOctokit(token);
+        const pull_request = (_a = github.context.payload.pull_request) !== null && _a !== void 0 ? _a : github.context.payload.event.pull_request;
         // @ts-ignore
         const branch = pull_request.head.ref;
         // @ts-ignore
         const pr_title = pull_request.title;
-        const pull_number = (_b = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.number) !== null && _b !== void 0 ? _b : pull_request.number;
-        const owner = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner;
-        const repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo;
+        const pull_number = (_b = github.context.payload.number) !== null && _b !== void 0 ? _b : pull_request.number;
+        const owner = github.context.repo.owner;
+        const repo = github.context.repo.repo;
         let result = await octokit.rest.pulls.listCommits({
             owner: owner,
             repo: repo,
             pull_number: pull_number
         });
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Got ${result.data.length} commits from Github.`);
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Testing with regex "${input_pattern}"`);
+        core.debug(`Got ${result.data.length} commits from Github.`);
+        core.debug(`Testing with regex "${input_pattern}"`);
         // Get all of the commit messages and the branch names in one list.
         let pile_of_possible_task_ids = [];
         for (const commit of result.data) {
@@ -6240,23 +6241,26 @@ const run = async () => {
         // Extract the task ids using the input pattern
         let task_ids = [];
         for (const possible_task_id of pile_of_possible_task_ids) {
-            _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Testing:  ${possible_task_id}`);
+            core.debug(`Testing:  ${possible_task_id}`);
             if (task_id_pattern.test(possible_task_id)) {
                 let matches = possible_task_id.match(task_id_pattern);
                 // @ts-ignore
                 let task_id = matches[0];
-                _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Found task id ${task_id}`);
+                core.info(`Found task id ${task_id}`);
                 task_ids.push(task_id);
             }
         }
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput('task_ids', task_ids.join('\n'));
+        let uniqueTaskIds = task_ids.filter((n, i) => task_ids.indexOf(n) === i);
+        core.setOutput('task_ids', uniqueTaskIds.join('\n'));
     }
     catch (error) {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(`Action failed: ${error}`);
+        core.setFailed(`Action failed: ${error}`);
     }
-};
+}
+
+;// CONCATENATED MODULE: ./src/main.ts
+
 run();
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (run);
 
 })();
 
