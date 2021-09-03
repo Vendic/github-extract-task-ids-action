@@ -27,8 +27,7 @@ test('Extract 4 task ids after PR opened', async () => {
     expect(infoMock).toHaveBeenCalledWith('Found task id ABC-100')
     expect(infoMock).toHaveBeenCalledWith('Found task id DEV-1234')
     expect(infoMock).toHaveBeenCalledWith('Found task id ABC-123')
-    expect(infoMock).toHaveBeenCalledWith('Found task id ABC-999')
-    expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'ABC-100\nDEV-1234\nABC-123\nABC-999')
+    expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'ABC-100\nDEV-1234\nABC-123')
 })
 
 test('Extract 4 task ids after PR review submitted', async () => {
@@ -51,8 +50,7 @@ test('Extract 4 task ids after PR review submitted', async () => {
     expect(infoMock).toHaveBeenCalledWith('Found task id ABC-100')
     expect(infoMock).toHaveBeenCalledWith('Found task id DEV-1234')
     expect(infoMock).toHaveBeenCalledWith('Found task id ABC-123')
-    expect(infoMock).toHaveBeenCalledWith('Found task id ABC-999')
-    expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'ABC-100\nDEV-1234\nABC-123\nABC-999')
+    expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'ABC-100\nDEV-1234\nABC-123')
 })
 
 beforeEach(() => {

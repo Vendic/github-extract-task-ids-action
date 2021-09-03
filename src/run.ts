@@ -47,7 +47,9 @@ export default async function run(): Promise<void> {
             }
         }
 
-        core.setOutput('task_ids', task_ids.join('\n'))
+        let uniqueTaskIds = task_ids.filter((n, i) => task_ids.indexOf(n) === i);
+
+        core.setOutput('task_ids', uniqueTaskIds.join('\n'))
     } catch (error) {
         core.setFailed(`Action failed: ${error}`)
     }
