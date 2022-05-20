@@ -25,9 +25,10 @@ test('Extract 4 task ids after PR opened', async () => {
 
     // Assertions
     expect(infoMock).toHaveBeenCalledWith('Found task id ABC-100')
+    expect(infoMock).toHaveBeenCalledWith('Found task id ABCDEFGH-14')
     expect(infoMock).toHaveBeenCalledWith('Found task id DEV-1234')
     expect(infoMock).toHaveBeenCalledWith('Found task id ABC-123')
-    expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'ABC-100\nDEV-1234\nABC-123')
+    expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'ABCDEFGH-14\nABC-100\nDEV-1234\nABC-123')
 })
 
 test('Extract 4 task ids after PR review submitted', async () => {
@@ -47,17 +48,18 @@ test('Extract 4 task ids after PR review submitted', async () => {
     await run()
 
     // Assertions
+    expect(infoMock).toHaveBeenCalledWith('Found task id DEV-1234')
     expect(infoMock).toHaveBeenCalledWith('Found task id ABC-100')
     expect(infoMock).toHaveBeenCalledWith('Found task id DEV-1234')
     expect(infoMock).toHaveBeenCalledWith('Found task id ABC-123')
-    expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'ABC-100\nDEV-1234\nABC-123')
+    expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'ABCDEFGH-14\nABC-100\nDEV-1234\nABC-123')
 })
 
 beforeEach(() => {
     jest.resetModules()
     process.env['INPUT_TOKEN'] = 'xyz'
     process.env['GITHUB_REPOSITORY'] = 'foo/bar';
-    process.env['INPUT_TASK_ID_PATTERN'] = '[A-Z]{2,5}-[0-9]{1,4}'
+    process.env['INPUT_TASK_ID_PATTERN'] = '[A-Z]{2,}-[0-9]{1,5}'
 })
 
 afterEach(() => {

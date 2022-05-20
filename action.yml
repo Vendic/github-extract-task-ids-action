@@ -11,5 +11,5 @@ inputs:
     task_id_pattern:
         description: The regex patteren of your task id
         required: true
-        default: '[A-Z]{2,5}-[0-9]{1,4}'
+        default: '[A-Z]{2,}-[0-9]{1,5}'
 
