@@ -1,0 +1,22 @@
+{
+  "title": "REF-12345 Test github extract task id",
+  "body": "XYZ-123 ## Description\r\n<!-- Please include a summary of the changes and the related issue. Please also include relevant context. -->\r\n\r\n## How Has This Been Tested?\r\n<!-- Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration -->\r\n\r\n## Checklist:\r\n- [ ] My code is up to date with the development branch, i've pulled in the latest changes\r\n- [ ] I've added the build label to my PR\r\n\r\n## Changelog\r\n<!-- Available topics: Added, Changed, Deprecated, Removed, Fixed, Security -->\r\n### Changed\r\n<!-- Add bullet list of changes here -->\r\n\r\n### Fixed\r\n<!-- Add bullet list of fixes here -->\r\n",
+  "head": {
+    "ref": "feature/REF-1234-test-feature-preview"
+  },
+  "author_association": "CONTRIBUTOR",
+  "auto_merge": null,
+  "active_lock_reason": null,
+  "merged": false,
+  "mergeable": true,
+  "rebaseable": true,
+  "mergeable_state": "unstable",
+  "merged_by": null,
+  "comments": 0,
+  "review_comments": 0,
+  "maintainer_can_modify": false,
+  "commits": 9,
+  "additions": 348,
+  "deletions": 598,
+  "changed_files": 15
+}
