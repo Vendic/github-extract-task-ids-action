@@ -6078,25 +6078,44 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(181));
 const github = __importStar(__nccwpck_require__(726));
 async function run() {
-    var _a, _b;
+    var _a;
     try {
         core.debug('Starting task id extraction.');
         const token = core.getInput('token');
         const input_pattern = core.getInput('task_id_pattern');
         const task_id_pattern = new RegExp(input_pattern);
         const octokit = github.getOctokit(token);
-        const pull_request = (_a = github.context.payload.pull_request) !== null && _a !== void 0 ? _a : github.context.payload.event.pull_request;
-        // @ts-ignore
-        const branch = pull_request.head.ref;
-        // @ts-ignore
-        const pr_title = pull_request.title;
-        const pull_number = (_b = github.context.payload.number) !== null && _b !== void 0 ? _b : pull_request.number;
         const owner = github.context.repo.owner;
         const repo = github.context.repo.repo;
+        const pull_number_input = core.getInput('pull_number');
+        // Check if pull_number_input is numeric, if not, use the pull_number from the context.
+        const pull_number = pull_number_input.match(/^[0-9]+$/) ?
+            pull_number_input :
+            (_a = github.context.payload.number) !== null && _a !== void 0 ? _a : github.context.payload.event.pull_request.number;
+        if (pull_number === undefined) {
+            core.setFailed('Cannot find pull request, no pull request number provided.');
+            return;
+        }
+        let pull_request;
+        try {
+            const pull_request_response = await octokit.rest.pulls.get({
+                owner: owner,
+                repo: repo,
+                pull_number: parseInt(pull_number)
+            });
+            pull_request = pull_request_response.data;
+        }
+        catch (error) {
+            core.setFailed(`Failed to get pull request: ${error}`);
+            return;
+        }
+        const branch = pull_request.head.ref;
+        const pr_title = pull_request.title;
+        const body = pull_request.body;
         let result = await octokit.rest.pulls.listCommits({
             owner: owner,
             repo: repo,
-            pull_number: pull_number
+            pull_number: parseInt(pull_number)
         });
         core.debug(`Got ${result.data.length} commits from Github.`);
         core.debug(`Testing with regex "${input_pattern}"`);
@@ -6104,6 +6123,9 @@ async function run() {
         let pile_of_possible_task_ids = [];
         for (const commit of result.data) {
             pile_of_possible_task_ids.push(commit.commit.message);
+        }
+        if (typeof body === 'string') {
+            pile_of_possible_task_ids.push(body);
         }
         pile_of_possible_task_ids.push(branch);
         pile_of_possible_task_ids.push(pr_title);

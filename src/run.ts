@@ -8,20 +8,41 @@ export default async function run(): Promise<void> {
         const input_pattern = core.getInput('task_id_pattern');
         const task_id_pattern : RegExp = new RegExp(input_pattern)
         const octokit = github.getOctokit(token)
-        const pull_request = github.context.payload.pull_request ?? github.context.payload.event.pull_request
-
-        // @ts-ignore
-        const branch = pull_request.head.ref
-        // @ts-ignore
-        const pr_title = pull_request.title
-        const pull_number = github.context.payload.number ?? pull_request.number
         const owner = github.context.repo.owner
         const repo = github.context.repo.repo
+
+        const pull_number_input = core.getInput('pull_number');
+        // Check if pull_number_input is numeric, if not, use the pull_number from the context.
+        const pull_number = pull_number_input.match(/^[0-9]+$/) ?
+            pull_number_input :
+            github.context.payload.number ?? github.context.payload.event.pull_request.number
+
+        if (pull_number === undefined) {
+            core.setFailed('Cannot find pull request, no pull request number provided.')
+            return;
+        }
+
+        let pull_request;
+        try {
+            const pull_request_response = await octokit.rest.pulls.get({
+                owner: owner,
+                repo: repo,
+                pull_number: parseInt(pull_number)
+            })
+            pull_request = pull_request_response.data
+        } catch (error) {
+            core.setFailed(`Failed to get pull request: ${error}`)
+            return;
+        }
+
+        const branch = pull_request.head.ref
+        const pr_title = pull_request.title
+        const body = pull_request.body
 
         let result = await octokit.rest.pulls.listCommits({
             owner: owner,
             repo: repo,
-            pull_number: pull_number
+            pull_number: parseInt(pull_number)
         })
         core.debug(`Got ${result.data.length} commits from Github.`)
         core.debug(`Testing with regex "${input_pattern}"`)
@@ -30,6 +51,10 @@ export default async function run(): Promise<void> {
         let pile_of_possible_task_ids : string[] = []
         for (const commit of result.data) {
             pile_of_possible_task_ids.push(commit.commit.message)
+        }
+
+        if (typeof body === 'string') {
+            pile_of_possible_task_ids.push(body);
         }
         pile_of_possible_task_ids.push(branch)
         pile_of_possible_task_ids.push(pr_title)

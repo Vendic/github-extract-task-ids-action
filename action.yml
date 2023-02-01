@@ -2,7 +2,7 @@ name: 'github-extract-task-ids-action'
 description: 'Extract task ids from commit messages, branch and pull request title using regular expressions'
 author: 'Tjitse-E'
 runs:
-    using: 'node12'
+    using: 'node16'
     main: 'dist/index.js'
 inputs:
     token:
@@ -12,4 +12,6 @@ inputs:
         description: The regex patteren of your task id
         required: true
         default: '[A-Z]{2,}-[0-9]{1,5}'
-
+    pull_number:
+        description: The pull request number
+        required: false
