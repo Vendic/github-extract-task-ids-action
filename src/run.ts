@@ -8,8 +8,8 @@ export default async function run(): Promise<void> {
         const input_pattern = core.getInput('task_id_pattern');
         const task_id_pattern : RegExp = new RegExp(input_pattern)
         const octokit = github.getOctokit(token)
-        const owner = github.context.repo.owner
-        const repo = github.context.repo.repo
+        const owner = core.getInput('owner') ?? github.context.repo.owner
+        const repo = core.getInput('repo') ?? github.context.repo.repo
 
         const pull_number_input = core.getInput('pull_number');
         // Check if pull_number_input is numeric, if not, use the pull_number from the context.

@@ -9644,20 +9644,20 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(4181));
 const github = __importStar(__nccwpck_require__(2726));
 async function run() {
-    var _a;
+    var _a, _b, _c;
     try {
         core.debug('Starting task id extraction.');
         const token = core.getInput('token');
         const input_pattern = core.getInput('task_id_pattern');
         const task_id_pattern = new RegExp(input_pattern);
         const octokit = github.getOctokit(token);
-        const owner = github.context.repo.owner;
-        const repo = github.context.repo.repo;
+        const owner = (_a = core.getInput('owner')) !== null && _a !== void 0 ? _a : github.context.repo.owner;
+        const repo = (_b = core.getInput('repo')) !== null && _b !== void 0 ? _b : github.context.repo.repo;
         const pull_number_input = core.getInput('pull_number');
         // Check if pull_number_input is numeric, if not, use the pull_number from the context.
         const pull_number = pull_number_input.match(/^[0-9]+$/) ?
             pull_number_input :
-            (_a = github.context.payload.number) !== null && _a !== void 0 ? _a : github.context.payload.event.pull_request.number;
+            (_c = github.context.payload.number) !== null && _c !== void 0 ? _c : github.context.payload.event.pull_request.number;
         if (pull_number === undefined) {
             core.setFailed('Cannot find pull request, no pull request number provided.');
             return;
