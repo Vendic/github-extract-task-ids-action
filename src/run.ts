@@ -6,7 +6,7 @@ export default async function run(): Promise<void> {
         core.debug('Starting task id extraction.')
         const token = core.getInput('token')
         const input_pattern = core.getInput('task_id_pattern');
-        const task_id_pattern : RegExp = new RegExp(input_pattern)
+        const task_id_pattern : RegExp = new RegExp(input_pattern, 'g') // Add 'g' for global matching
         const octokit = github.getOctokit(token)
         const owner = github.context.repo.owner
         const repo = github.context.repo.repo
@@ -63,12 +63,12 @@ export default async function run(): Promise<void> {
         let task_ids : string[] = []
         for (const possible_task_id of pile_of_possible_task_ids) {
             core.debug(`Testing:  ${possible_task_id}`)
-            if (task_id_pattern.test(possible_task_id)) {
-                let matches = possible_task_id.match(task_id_pattern)
-                // @ts-ignore
-                let task_id = matches[0]
-                core.info(`Found task id ${task_id}`)
-                task_ids.push(task_id)
+            let matches = possible_task_id.match(task_id_pattern)
+            if (matches) {
+                for (let match of matches) {
+                    core.info(`Found task id ${match}`)
+                    task_ids.push(match)
+                }
             }
         }
 

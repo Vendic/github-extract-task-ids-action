@@ -4,7 +4,7 @@
     "description": "Extract task ID's from a Github PR using regular expressions",
     "main": "src/main.ts",
     "scripts": {
-        "build": "tsc",
+        "build": "ncc build src/main.ts -o dist",
         "test": "tsc --noEmit && jest"
     },
     "license": "MIT",
