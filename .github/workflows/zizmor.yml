@@ -27,7 +27,12 @@ jobs:
 
       - name: Install zizmor
         run: |
-          curl -sSL https://github.com/zizmorcore/zizmor/releases/latest/download/zizmor-aarch64-unknown-linux-gnu.tar.gz | tar xz
+          case "$(uname -m)" in
+            aarch64|arm64) ZIZMOR_ARCH=aarch64 ;;
+            x86_64|amd64) ZIZMOR_ARCH=x86_64 ;;
+            *) echo "Unsupported architecture: $(uname -m)" >&2; exit 1 ;;
+          esac
+          curl -sSL "https://github.com/zizmorcore/zizmor/releases/latest/download/zizmor-${ZIZMOR_ARCH}-unknown-linux-gnu.tar.gz" | tar xz
           mv zizmor /usr/local/bin/zizmor
 
       - name: Run zizmor

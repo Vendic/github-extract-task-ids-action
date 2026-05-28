@@ -2,6 +2,3 @@ node_modules
 .idea
 *~
 coverage/
-
-# Transient ncc output; committed action entrypoint is dist/index.cjs
-dist/index.js

@@ -54,7 +54,7 @@ afterEach(() => {
     delete process.env['INPUT_PULL_NUMBER']
 })
 
-test('Extract 4 task ids with manual pull_number input', async () => {
+test('Extract 6 task ids with manual pull_number input', async () => {
     process.env['INPUT_PULL_NUMBER'] = '2'
 
     const infoMock = jest.spyOn(core, 'info')
@@ -65,7 +65,7 @@ test('Extract 4 task ids with manual pull_number input', async () => {
     expectFoundTaskIds(infoMock, setOutputMock)
 })
 
-test('Extract 4 task ids after PR opened', async () => {
+test('Extract 6 task ids after PR opened', async () => {
     github.context.payload = readFixture('pull_request_context.json')
 
     const infoMock = jest.spyOn(core, 'info')
@@ -76,7 +76,7 @@ test('Extract 4 task ids after PR opened', async () => {
     expectFoundTaskIds(infoMock, setOutputMock)
 })
 
-test('Extract 4 task ids after PR review submitted', async () => {
+test('Extract 6 task ids after PR review submitted', async () => {
     github.context.payload = readFixture('pull_request_review_context.json')
 
     const infoMock = jest.spyOn(core, 'info')
