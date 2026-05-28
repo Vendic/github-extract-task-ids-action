@@ -86,3 +86,19 @@ test('Extract 6 task ids after PR review submitted', async () => {
 
     expectFoundTaskIds(infoMock, setOutputMock)
 })
+
+test('Extracts multiple task ids from a single string (global matching)', async () => {
+    process.env['INPUT_PULL_NUMBER'] = '2'
+
+    mockPullsGet.mockResolvedValue({ data: { head: { ref: 'main' }, title: 'No ids here', body: 'none' } })
+    mockListCommits.mockResolvedValue({ data: [{ commit: { message: 'PIPE-1 and PIPE-2 done' } }] })
+
+    const infoMock = jest.spyOn(core, 'info')
+    const setOutputMock = jest.spyOn(core, 'setOutput')
+
+    await run()
+
+    expect(infoMock).toHaveBeenCalledWith('Found task id PIPE-1')
+    expect(infoMock).toHaveBeenCalledWith('Found task id PIPE-2')
+    expect(setOutputMock).toHaveBeenCalledWith('task_ids', 'PIPE-1\nPIPE-2')
+})
