@@ -31616,7 +31616,7 @@ async function run() {
         core.debug('Starting task id extraction.')
         const token = core.getInput('token')
         const input_pattern = core.getInput('task_id_pattern')
-        const task_id_pattern = new RegExp(input_pattern)
+        const task_id_pattern = new RegExp(input_pattern, 'g')
         const octokit = github.getOctokit(token)
         const owner = github.context.repo.owner
         const repo = github.context.repo.repo
@@ -31673,11 +31673,12 @@ async function run() {
         const task_ids = []
         for (const possible_task_id of pile_of_possible_task_ids) {
             core.debug(`Testing:  ${possible_task_id}`)
-            if (task_id_pattern.test(possible_task_id)) {
-                const matches = possible_task_id.match(task_id_pattern)
-                const task_id = matches[0]
-                core.info(`Found task id ${task_id}`)
-                task_ids.push(task_id)
+            const matches = possible_task_id.match(task_id_pattern)
+            if (matches) {
+                for (const match of matches) {
+                    core.info(`Found task id ${match}`)
+                    task_ids.push(match)
+                }
             }
         }
 
