@@ -2,8 +2,8 @@ name: 'github-extract-task-ids-action'
 description: 'Extract task ids from commit messages, branch and pull request title using regular expressions'
 author: 'Tjitse-E'
 runs:
-    using: 'node20'
-    main: 'dist/index.js'
+    using: 'node24'
+    main: 'dist/index.cjs'
 inputs:
     token:
         description: Your Github token
