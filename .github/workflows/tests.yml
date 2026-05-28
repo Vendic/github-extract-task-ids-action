@@ -1,30 +1,24 @@
-name: 'Tests'
-on: [ push ]
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions: {}
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            -   uses: actions/checkout@v1
-                with:
-                    fetch-depth: 1
+  test:
+    runs-on: runs-on=${{ github.run_id }}/runner=micro/spot=lp
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
-            -   uses: actions/setup-node@v2
-                with:
-                    node-version: '14'
+      - name: Install dependencies
+        run: npm ci
 
-            -   run: npm install
-            -   run: npm run test
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            -   uses: actions/checkout@v1
-                with:
-                    fetch-depth: 1
-
-            -   uses: actions/setup-node@v2
-                with:
-                    node-version: '14'
-
-            -   run: npm install
-            -   run: npm run build
+      - name: Run tests
+        run: npm test
