@@ -1,5 +1,5 @@
 # Github extract task ids action
-Extract task ids from commit messages, branch and pull request title
+Extract task ids from the branch name, the pull request title and the changelog links in the pull request body.
 
 Works on the following events:
 ```yml
@@ -11,6 +11,24 @@ on:
 ```
 
 Could be used to extract task ID's from Jira, Clickup or other project management tools. These can then be used for later processing. For example, changing the stataus in the external project management tool.
+
+## Where task ids are read from
+
+The action only reads a task id where the pull request states what it delivers:
+
+| Source | Read? | Example |
+| --- | --- | --- |
+| Branch name | yes | `feature/ABC-123-do-the-thing` |
+| Pull request title | yes | `ABC-123 Do the thing` |
+| Changelog link in the body | yes | `- [ABC-123](https://example.com/task/ABC-123) What changed.` |
+| Anything else in the body | no | ``- other/repo#12 (`ABC-123`)`` |
+| Commit messages | no | `The ABC-123 patch still applies, it touches another file.` |
+
+Only the link text of a markdown link counts as a changelog entry, so `[the ABC-123 preview](https://example.com)` is ignored: the id has to be what the link points at, not a word inside a sentence.
+
+Commit messages are not read at all. A task id mentioned in passing in a commit body does not describe the work a pull request delivers, and acting on it drags unrelated tasks through the pull request lifecycle. Because task ids are unique across a whole workspace, that can reach tasks belonging to an entirely different project.
+
+When no task id is found in any of the three sources, the action logs a warning and returns an empty `task_ids` output, so a workflow can still decide what to do (`if: ${{ steps.task_ids.outputs.task_ids }}`).
 
 For example, setting all tasks back to 'in progress' after changes are requested:
 ```yml
