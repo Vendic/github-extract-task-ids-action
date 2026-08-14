@@ -1,5 +1,5 @@
 name: 'github-extract-task-ids-action'
-description: 'Extract task ids from commit messages, branch and pull request title using regular expressions'
+description: 'Extract task ids from the branch name, the pull request title and the changelog links in the body, using regular expressions'
 author: 'Tjitse-E'
 runs:
     using: 'node24'
